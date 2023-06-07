@@ -1,0 +1,16 @@
+services:
+  db:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=0123456789
+    ports: 
+      - 3306:3306
+    volumes:
+      - ./db/mysql:/var/lib/mysql
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - 8000:8000
+    volumes:
+      - ./backend/app:/app
