@@ -1,4 +1,10 @@
+# MacOS
 .DS_Store
+
+# VSCode
 .vscode
+
+# Project
 db/mysql
 backend/app/__pycache__
+backend/.venv

@@ -1,6 +1,7 @@
 services:
   db:
     image: mysql:latest
+    container_name: dictionary-api-db
     environment:
       - MYSQL_ROOT_PASSWORD=0123456789
     ports: 
@@ -10,7 +11,8 @@ services:
   backend:
     build:
       context: ./backend
+    container_name: dictionary-api-backend
     ports:
-      - 8000:8000
+      - 80:80
     volumes:
-      - ./backend/app:/app
+      - ./backend/app:/code/app

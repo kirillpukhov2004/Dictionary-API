@@ -1,13 +1,11 @@
 FROM python:3.10-alpine
 
-RUN pip install Flask Flask-SQLAlchemy Flask-RESTful mysql-connector-python
+WORKDIR /code
 
-ENV FLASK_APP "/app/main.py"
-ENV FLASK_RUN_HOST 0.0.0.0
-ENV FLASK_RUN_PORT 8000
+COPY ./requirements.txt /code/requirements.txt
 
-ENV FLASK_DEBUG True
+RUN pip install --no-cache-dir -r /code/requirements.txt
 
-EXPOSE 8000
+EXPOSE 80
 
-CMD ["flask", "run"]
+CMD ["uvicorn", "app.main:app", "--reload", "--host", "0.0.0.0", "--port", "80"]
