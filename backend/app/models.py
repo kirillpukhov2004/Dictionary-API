@@ -1,22 +1,14 @@
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy import String, ForeignKey
 
 from .database import Base
-
-
-class Word(Base):
-    __tablename__ = "words"
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-
-    def __repr__(self):
-        return f"Word(id={self.id})"
 
 
 class Language(Base):
     __tablename__ = "languages"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    word_id = Column(Integer, ForeignKey("word.id"), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    word_id: Mapped[int] = mapped_column(ForeignKey("words.id"))
 
     def __repr__(self):
         return f"Language(id={self.id}, word_id={self.word_id})"
@@ -25,19 +17,34 @@ class Language(Base):
 class Translation(Base):
     __tablename__ = "translations"
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    language_id = Column(Integer, ForeignKey("language.id"), nullable=False)
-    string = Column(String(255), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True)
+    language_id: Mapped[int] = mapped_column(ForeignKey("languages.id"))
+    string: Mapped[str] = mapped_column(String(255))
 
     def __repr__(self):
         return f"Translation(id={self.id}, language_id={self.language_id}, string={self.string})"
 
 
+class Word(Base):
+    __tablename__ = "words"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+
+    translations: Mapped[list[Translation]] = relationship(
+        secondary="word_translations"
+    )
+
+    def __repr__(self):
+        return f"Word(id={self.id})"
+
+
 class WordTranslation(Base):
     __tablename__ = "word_translations"
 
-    word_id = Column(Integer, ForeignKey("word.id"), primary_key=True)
-    translation_id = Column(Integer, ForeignKey("translation.id"), primary_key=True)
+    word_id: Mapped[int] = mapped_column(ForeignKey("words.id"), primary_key=True)
+    translation_id: Mapped[int] = mapped_column(
+        ForeignKey("translations.id"), primary_key=True
+    )
 
     def __repr__(self):
         return f"WordTranslation(word_id={self.word_id}, translation_id={self.translation_id})"

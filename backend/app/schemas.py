@@ -10,22 +10,13 @@ class Word(BaseModel):
         orm_mode = True
 
 
-class WordRead(BaseModel):
-    language_id: int
-
-
 class WordCreate(BaseModel):
     language_id: int
     string: str
 
 
 class WordUpdate(BaseModel):
-    language_id: int
     string: str
-
-
-class WordDelete(BaseModel):
-    language_id: int
 
 
 class LanguageRead(BaseModel):
