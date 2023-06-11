@@ -16,3 +16,9 @@ services:
       - 80:80
     volumes:
       - ./backend/app:/code/app
+  phpmyadmin:
+    image:  phpmyadmin:latest
+    container_name: dictionary-api-phpmyadmin
+    ports:
+      - 8080:80
+      
